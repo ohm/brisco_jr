@@ -1,6 +1,6 @@
 FOREMAN = $(shell which foreman)
 
-REBAR = $(shell which rebar)
+REBAR = ./rebar
 
 default: test
 
