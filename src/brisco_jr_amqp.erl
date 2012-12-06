@@ -9,7 +9,7 @@
          connect/1,
          disconnect/1,
          receive_message/1,
-         create_bindings/3]).
+         create_bindings/2]).
 
 %%
 %% API
@@ -23,15 +23,14 @@ connect(Uri) ->
     {ok, Channel} = amqp_connection:open_channel(Connection),
     #amqp_state{connection = Connection, channel = Channel}.
 
-create_bindings(Exchange, Queue, #amqp_state{channel = Channel}) ->
+create_bindings(Exchange, #amqp_state{channel = Channel}) ->
     #'exchange.declare_ok'{} = declare_exchange(Channel, Exchange),
-    #'queue.declare_ok'{} = declare_queue(Channel, Queue),
+    #'queue.declare_ok'{queue = Queue} = declare_queue(Channel),
     #'queue.bind_ok'{} = bind_queue(Channel, Exchange, Queue, Queue),
     #'basic.consume_ok'{} = amqp_channel:subscribe(Channel, #'basic.consume'{queue = Queue}, self()),
     ok.
 
-receive_message({#'basic.deliver'{delivery_tag = Tag},
-        #amqp_msg{payload = Payload}}) ->
+receive_message({#'basic.deliver'{delivery_tag = Tag}, #amqp_msg{payload = Payload}}) ->
     lager:info("received payload: ~p", [Payload]),
     {Tag, Payload};
 receive_message(_Any) ->
@@ -56,8 +55,8 @@ declare_exchange(Channel, Exchange) ->
     Declare = #'exchange.declare'{exchange = Exchange, durable = true},
     amqp_channel:call(Channel, Declare).
 
-declare_queue(Channel, Queue) ->
-    Declare = #'queue.declare'{queue = Queue, auto_delete = true},
+declare_queue(Channel) ->
+    Declare = #'queue.declare'{auto_delete = true},
     amqp_channel:call(Channel, Declare).
 
 bind_queue(Channel, Exchange, Queue, RoutingKey) ->

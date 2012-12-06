@@ -40,7 +40,7 @@ handle_call(_Request, _From, _State) -> ok.
 
 handle_cast({subscribe, Uri}, _State = #consumer_state{json_key = Key}) ->
     Connection = brisco_jr_amqp:connect(Uri),
-    ok = brisco_jr_amqp:create_bindings(?FOO, ?FOO, Connection),
+    ok = brisco_jr_amqp:create_bindings(?FOO, Connection),
     {noreply, #consumer_state{connection = Connection, json_key = Key}}.
 
 handle_info(Info, State = #consumer_state{connection = Connection, json_key = Key}) ->
