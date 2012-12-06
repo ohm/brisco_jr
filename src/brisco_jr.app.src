@@ -1,0 +1,16 @@
+{application, brisco_jr,
+ [
+  {description, ""},
+  {vsn, "1"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib,
+                  crypto,
+                  lager,
+                  ranch,
+                  cowboy
+                 ]},
+  {mod, {brisco_jr_app, []}},
+  {env, []}
+ ]}.
