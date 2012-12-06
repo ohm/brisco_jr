@@ -1,7 +1,7 @@
 {application, brisco_jr,
  [
-  {description, ""},
-  {vsn, "1"},
+  {description, "new adventures in counting"},
+  {vsn, "0.0.1"},
   {registered, []},
   {applications, [
                   kernel,
