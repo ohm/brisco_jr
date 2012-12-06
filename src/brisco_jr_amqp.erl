@@ -9,7 +9,7 @@
          connect/1,
          disconnect/1,
          receive_message/1,
-         create_bindings/2]).
+         create_bindings/3]).
 
 %%
 %% API
@@ -23,10 +23,10 @@ connect(Uri) ->
     {ok, Channel} = amqp_connection:open_channel(Connection),
     #amqp_state{connection = Connection, channel = Channel}.
 
-create_bindings(Exchange, #amqp_state{channel = Channel}) ->
+create_bindings(RoutingKey, Exchange, #amqp_state{channel = Channel}) ->
     #'exchange.declare_ok'{} = declare_exchange(Channel, Exchange),
     #'queue.declare_ok'{queue = Queue} = declare_queue(Channel),
-    #'queue.bind_ok'{} = bind_queue(Channel, Exchange, Queue, Queue),
+    #'queue.bind_ok'{} = bind_queue(Channel, Exchange, Queue, RoutingKey),
     #'basic.consume_ok'{} = amqp_channel:subscribe(Channel, #'basic.consume'{queue = Queue}, self()),
     ok.
 

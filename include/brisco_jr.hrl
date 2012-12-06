@@ -12,4 +12,6 @@
                      channel :: pid() | undefined}).
 
 -record(consumer_state, {connection = #amqp_state{},
-                         json_key :: binary() | undefined}).
+                         exchange_name :: binary() | undefined,
+                         json_key :: binary() | undefined,
+                         routing_key :: binary() | undefined}).
