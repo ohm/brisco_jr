@@ -1,6 +1,12 @@
+FOREMAN = $(shell which foreman)
+
 REBAR = $(shell which rebar)
 
 default: test
+
+build: deps compile
+	rm -rf rel/package
+	$(REBAR) generate -f
 
 clean:
 	$(REBAR) clean
@@ -13,12 +19,8 @@ deps:
 	$(REBAR) get-deps
 
 run: deps compile
-	AMQP_URI="amqp://guest:guest@localhost:5672/%2F" JSON_KEY="user_id" PORT=8080 exec erl -pa ebin deps/*/ebin -s brisco_jr
+	$(FOREMAN) run erl -pa ebin deps/*/ebin -s brisco_jr
 
 .PHONY: test
 test: deps compile
 	$(REBAR) eunit skip_deps=true
-
-build: deps compile
-	rm -rf rel/package
-	$(REBAR) generate -f
