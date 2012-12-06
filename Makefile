@@ -16,6 +16,7 @@ compile:
 
 .PHONY: deps
 deps:
+	cd vendor && $(MAKE)
 	$(REBAR) get-deps
 
 run: deps compile

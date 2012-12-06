@@ -7,3 +7,4 @@ log
 *.so
 *.beam
 rel/package
+c_src/sparsehash-2.0.2
