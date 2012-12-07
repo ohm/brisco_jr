@@ -4,7 +4,7 @@ REBAR = ./rebar
 
 default: test
 
-build: deps compile
+build: clean deps compile
 	rm -rf rel/package
 	$(REBAR) generate -f
 
