@@ -64,5 +64,7 @@ terminate(_Reason, #consumer_state{connection = Connection}) ->
 increment_counter(Payload, Key) ->
     case brisco_jr_json:parse(Payload, Key) of
         unmatched -> lager:error("failed to parse payload.");
-        Counter -> brisco_jr_counter:increment(Counter)
+        Counter ->
+            lager:info("incrementing counter ~p.", [Counter]),
+            brisco_jr_counter:increment(Counter)
     end.

@@ -31,7 +31,7 @@ create_bindings(RoutingKey, Exchange, #amqp_state{channel = Channel}) ->
     ok.
 
 receive_message({#'basic.deliver'{delivery_tag = Tag}, #amqp_msg{payload = Payload}}) ->
-    lager:info("received payload: ~p", [Payload]),
+    lager:debug("received payload: ~p", [Payload]),
     {Tag, Payload};
 receive_message(_Any) ->
     unknown.
