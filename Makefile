@@ -25,3 +25,7 @@ run: deps compile
 .PHONY: test
 test: deps compile
 	$(REBAR) eunit skip_deps=true
+
+mrproper:
+	cd vendor && $(MAKE) clean
+	$(REBAR) clean
